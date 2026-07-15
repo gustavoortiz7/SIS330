@@ -1,0 +1,18 @@
+# Modelos
+modelos/
+*.pt
+*.h5
+
+# Archivos comprimidos
+*.zip
+
+# Python
+__pycache__/
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Entornos virtuales
+venv/
+.env

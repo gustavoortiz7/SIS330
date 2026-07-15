@@ -38,58 +38,93 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Voley Project'),
-        backgroundColor: Color.fromARGB(255, 196, 236, 37),
+        backgroundColor: Color(0xFF0033A0), // Azul Marino
       ),
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: Image.asset(
-              'assets/images/fondo5.jpg',
-              fit: BoxFit.cover,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 400.0), // Ajusta este valor según sea necesario
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => RecordVideoScreen(cameras: cameras)),
-                      );
-                    },
-                    icon: Icon(Icons.videocam),
-                    label: const Text('Grabar Video'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 196, 236, 37), // Cambiado a backgroundColor
-                      padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                      textStyle: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => VideoUploadScreen()),
-                      );
-                    },
-                    icon: Icon(Icons.upload_file),
-                    label: const Text('Subir Video'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 196, 236, 37), // Cambiado a backgroundColor
-                      padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                      textStyle: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ],
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color(0xFF0033A0), // Azul Marino
+              ),
+              child: Text(
+                'Menú',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
               ),
             ),
+            ListTile(
+              leading: Icon(Icons.videocam),
+              title: Text('Grabar Video'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RecordVideoScreen(cameras: cameras)),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.upload_file),
+              title: Text('Subir Video'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => VideoUploadScreen()),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+      body: Container(
+        color: Color(0xFFFFFFFF), // Fondo Blanco
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RecordVideoScreen(cameras: cameras)),
+                  );
+                },
+                child: Text('Grabar Video'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF0033A0), // Azul Marino
+                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                  textStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => VideoUploadScreen()),
+                  );
+                },
+                child: Text('Subir Video'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFFFCC00), // Amarillo
+                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                  textStyle: TextStyle(
+                    color: Color(0xFF333333), // Gris Oscuro
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -165,7 +200,6 @@ class _RecordVideoScreenState extends State<RecordVideoScreen> {
     }
   }
 
-
   Future<void> _sendVideo() async {
     setState(() {
       _isSending = true;
@@ -174,7 +208,7 @@ class _RecordVideoScreenState extends State<RecordVideoScreen> {
     if (_videoFile != null) {
       try {
         final videoBytes = await _videoFile!.readAsBytes();
-        final uri = Uri.parse('http://192.168.188.137:8000/video');
+        final uri = Uri.parse('http://192.168.238.137:8000/video');
         var request = http.MultipartRequest('POST', uri)
           ..files.add(http.MultipartFile.fromBytes(
             'video',
@@ -227,7 +261,7 @@ class _RecordVideoScreenState extends State<RecordVideoScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Grabar Video'),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Color(0xFF0033A0), // Azul Marino
       ),
       body: FutureBuilder<void>(
         future: _initializeControllerFuture,
@@ -241,14 +275,17 @@ class _RecordVideoScreenState extends State<RecordVideoScreen> {
                     bottom: 16,
                     left: 16,
                     right: 16,
-                    child: ElevatedButton.icon(
+                    child: ElevatedButton(
                       onPressed: _sendVideo,
-                      icon: Icon(Icons.send),
-                      label: const Text('Enviar Video'),
+                      child: Text('Enviar Video'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 196, 236, 37), // Cambiado a backgroundColor
+                        backgroundColor: Color(0xFFFFCC00), // Amarillo
                         padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                        textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        textStyle: TextStyle(
+                          color: Color(0xFF333333), // Gris Oscuro
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
@@ -278,14 +315,13 @@ class _RecordVideoScreenState extends State<RecordVideoScreen> {
         },
       ),
       floatingActionButton: Container(
-        margin: EdgeInsets.only(bottom: 110, right: 190),
+        margin: EdgeInsets.only(bottom: 110,right: 190),
         width: 90,
-
         height: 90,
         child: FloatingActionButton(
           onPressed: _isRecording ? _stopVideoRecording : _startVideoRecording,
           child: Icon(_isRecording ? Icons.stop : Icons.videocam),
-          backgroundColor: Colors.red,
+          backgroundColor: Color(0xFF0033A0), // Azul Marino
         ),
       ),
     );
@@ -314,7 +350,7 @@ class _VideoUploadScreenState extends State<VideoUploadScreen> {
 
       try {
         final videoBytes = await videoFile.readAsBytes();
-        final uri = Uri.parse('http://192.168.188.137:8000/video');
+        final uri = Uri.parse('http://192.168.238.137:8000/video');
         var request = http.MultipartRequest('POST', uri)
           ..files.add(http.MultipartFile.fromBytes(
             'video',
@@ -333,7 +369,7 @@ class _VideoUploadScreenState extends State<VideoUploadScreen> {
             final processedVideoFile = File(processedVideoPath);
             await processedVideoFile.writeAsBytes(processedVideoBytes);
 
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Video enviado y procesado guardado en: $processedVideoPath')));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Video enviado y procesado guardado en')));
 
             _videoPlayerController = VideoPlayerController.file(processedVideoFile)
               ..initialize().then((_) {
@@ -356,60 +392,60 @@ class _VideoUploadScreenState extends State<VideoUploadScreen> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Subir Video'),
-        backgroundColor: Colors.blueAccent,
-      ),
-      body: Stack(
-        children:[
-          Positioned.fill(
-            child: Image.asset(
-              'assets/images/fondo1.jpg',
-              fit: BoxFit.cover,
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text('Subir Video'),
+      backgroundColor: Color(0xFF0033A0), // Azul Marino
+    ),
+    body: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        if (_videoPlayerController != null && _videoPlayerController!.value.isInitialized)
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                if (_videoPlayerController!.value.isPlaying) {
+                  _videoPlayerController?.pause();
+                } else {
+                  _videoPlayerController?.play();
+                }
+              },
+              child: AspectRatio(
+                aspectRatio: _videoPlayerController!.value.aspectRatio,
+                child: VideoPlayer(_videoPlayerController!),
+              ),
             ),
           ),
-          Center(
-            child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ElevatedButton.icon(
+        // Botón movido a una posición diferente
+        Stack(
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: ElevatedButton(
                 onPressed: _pickAndSendVideo,
-                icon: Icon(Icons.upload_file),
-                label: const Text('Seleccionar Video'),
+                child: Text('Seleccionar Video'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 196, 236, 37), // Cambiado a backgroundColor
+                  backgroundColor: Color(0xFFFFCC00), // Amarillo
                   padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                  textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              ),
-              if (_isSending)
-                const Center(child: CircularProgressIndicator()),
-              if (_videoPlayerController != null && _videoPlayerController!.value.isInitialized)
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      if (_videoPlayerController!.value.isPlaying) {
-                        _videoPlayerController?.pause();
-                      } else {
-                        _videoPlayerController?.play();
-                      }
-                    },
-                    child: AspectRatio(
-                      aspectRatio: _videoPlayerController!.value.aspectRatio,
-                      child: VideoPlayer(_videoPlayerController!),
-                    ),
+                  textStyle: TextStyle(
+                    color: Color(0xFF333333), // Gris Oscuro
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-            ],
+              ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
+          ],
+        ),
+        if (_isSending)
+          const Center(child: CircularProgressIndicator()),
+      ],
+    ),
+  );
+}
+
 
   @override
   void dispose() {
@@ -417,3 +453,4 @@ class _VideoUploadScreenState extends State<VideoUploadScreen> {
     super.dispose();
   }
 }
+
